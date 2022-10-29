@@ -6,11 +6,11 @@ import data from "./data.json";
 const DataGridExample = () => {
   const columns = useMemo<Column[]>(
     () => [
-      { accessor: "id", header: "Id", editable: false, width: 50 },
+      // { accessor: "id", header: "Id", editable: false, width: 50 },
       {
         accessor: "avatar",
         header: "Avatar",
-        renderCell: (avatar: string) => <img src={avatar} alt="" />,
+        renderCell: (row: any) => <img src={row.avatar} alt="" />,
         sortable: false,
         editable: true,
         type: "text",
@@ -57,7 +57,16 @@ const DataGridExample = () => {
           required: true,
         },
       },
+      {
+        accessor: "firstName",
+        header: "First Name",
+        renderCell: (row: any) => <p>{row.name.split(" ")[0]}</p>,
+        sortable: false,
+        editable: false,
+        width: 100,
+      },
     ],
+
     []
   );
 

@@ -3,7 +3,7 @@ interface BaseType {
   header: string;
   sortable?: boolean;
   width?: number;
-  renderCell?: (params: any) => JSX.Element;
+  renderCell?: (row: any) => JSX.Element;
 }
 
 export interface NonEditableColumn extends BaseType {

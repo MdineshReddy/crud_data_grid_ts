@@ -54,7 +54,7 @@ const Row: React.FC<Props> = ({
           return (
             <td key={index}>
               {column.renderCell
-                ? column.renderCell(row[column.accessor])
+                ? column.renderCell(row)
                 : row[column.accessor]}
             </td>
           );
@@ -148,7 +148,11 @@ const Row: React.FC<Props> = ({
             </td>
           );
         }
-        return <td key={index}>{row[column.accessor]}</td>;
+        return (
+          <td key={index}>
+            {column.renderCell ? column.renderCell(row) : row[column.accessor]}
+          </td>
+        );
       })}
     </tr>
   );
