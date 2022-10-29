@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import Form from "./Form";
 import reducer from "./reducer";
 import Thead from "./Thead";
@@ -17,12 +17,19 @@ interface Props {
 
 const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
   const [state, dispatch] = useReducer(reducer, {
-    rows: data,
+    rows: [],
     sort: {
       property: "",
       asc: true,
     },
   });
+
+  useEffect(() => {
+    dispatch({
+      type: "INIT_DATA",
+      payload: data,
+    });
+  }, []);
 
   const [showForm, setShowForm] = useState<boolean>(false);
 
@@ -36,13 +43,24 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
     });
   };
 
-  const handleDelete = (identifier: any, value: any) => {
+  const handleDelete = (uuid: any) => {
     dispatch({
       type: "DELETE_ROW",
-      payload: {
-        identifier,
-        value,
-      },
+      payload: uuid,
+    });
+  };
+
+  const handleUpdate = (uuid: any, data: any) => {
+    dispatch({
+      type: "UPDATE_ROW",
+      payload: { uuid, data },
+    });
+  };
+
+  const handleInsert = (data: any) => {
+    dispatch({
+      type: "INSERT_ROW",
+      payload: data,
     });
   };
 
@@ -56,6 +74,7 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
           columns={columns}
           setShowForm={setShowForm}
           validation={validation}
+          handleInsert={handleInsert}
         />
       )}
       <div className="table-container">
@@ -80,8 +99,7 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
                 columns={columns}
                 validation={validation}
                 handleDelete={handleDelete}
-                // handleUpdate={handleUpdate}
-                // handleDelete={handleDelete}
+                handleUpdate={handleUpdate}
               />
             ))}
           </tbody>

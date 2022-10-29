@@ -5,12 +5,18 @@ interface Props {
   columns: Column[];
   row: any;
   validation?: (values: any) => string[];
-  handleDelete: (identifier: any, value: any) => any;
+  handleDelete: (uuid: any) => any;
+  handleUpdate: (uuid: any, data: any) => any;
 }
 
-const Row: React.FC<Props> = ({ columns, row, validation, handleDelete }) => {
+const Row: React.FC<Props> = ({
+  columns,
+  row,
+  validation,
+  handleDelete,
+  handleUpdate,
+}) => {
   const [editMode, setEditMode] = useState(false);
-  const rowData = useRef<any>(row);
   const columnNames = columns.map((column: Column) => column.accessor);
   const defaultData: any = {};
   columnNames.forEach((columnName) => {
@@ -35,7 +41,7 @@ const Row: React.FC<Props> = ({ columns, row, validation, handleDelete }) => {
             onClick={() => {
               // eslint-disable-next-line no-restricted-globals
               if (confirm("Are you sure you want to delete this row?")) {
-                handleDelete("id", row.id);
+                handleDelete(row.uuid);
               }
             }}
           >
@@ -46,8 +52,8 @@ const Row: React.FC<Props> = ({ columns, row, validation, handleDelete }) => {
           return (
             <td key={index}>
               {column.renderCell
-                ? column.renderCell(rowData.current[column.accessor])
-                : rowData.current[column.accessor]}
+                ? column.renderCell(row[column.accessor])
+                : row[column.accessor]}
             </td>
           );
         })}
@@ -64,14 +70,14 @@ const Row: React.FC<Props> = ({ columns, row, validation, handleDelete }) => {
             if (validation) {
               let errors = validation(rowState);
               if (errors.length === 0) {
-                rowData.current = rowState;
+                handleUpdate(row.uuid, rowState);
                 setEditMode(false);
               } else {
                 let errMessage = errors.reduce((p, c) => (p += "\n" + c), "");
                 alert(errMessage);
               }
             } else {
-              rowData.current = rowState;
+              handleUpdate(row.uuid, rowState);
               setEditMode(false);
             }
           }}
@@ -122,7 +128,7 @@ const Row: React.FC<Props> = ({ columns, row, validation, handleDelete }) => {
             </td>
           );
         }
-        return <td key={index}>{rowData.current[column.accessor]}</td>;
+        return <td key={index}>{row[column.accessor]}</td>;
       })}
     </tr>
   );

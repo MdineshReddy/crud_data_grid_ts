@@ -5,9 +5,15 @@ interface Props {
   setShowForm: any;
   columns: Column[];
   validation: any;
+  handleInsert: (data: any) => void;
 }
 
-const Form: React.FC<Props> = ({ setShowForm, columns, validation }) => {
+const Form: React.FC<Props> = ({
+  setShowForm,
+  columns,
+  validation,
+  handleInsert,
+}) => {
   const formElements = columns.filter((column) => column.editable);
   const columnNames = formElements.map((column) => column.accessor);
   const defaultData: any = {};
@@ -22,7 +28,7 @@ const Form: React.FC<Props> = ({ setShowForm, columns, validation }) => {
     if (validation) {
       let errors = validation(formData);
       if (errors.length === 0) {
-        // insertRow(formData);
+        handleInsert(formData);
         setShowForm(false);
       } else {
         let errMessage = errors.reduce(

@@ -1,3 +1,6 @@
+import { resolveTypeReferenceDirective } from "typescript";
+import { v4 as uuid } from "uuid";
+
 interface Action {
   type: string;
   payload?: any;
@@ -13,8 +16,13 @@ interface State {
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "INSERT_ROW": {
-      const newRows = [...state.rows, action.payload];
+    case "INIT_DATA": {
+      const newRows = action.payload.map((item: any) => {
+        return {
+          ...item,
+          uuid: uuid(),
+        };
+      });
       return {
         ...state,
         rows: newRows,
@@ -24,9 +32,20 @@ function reducer(state: State, action: Action): State {
         },
       };
     }
+    case "INSERT_ROW": {
+      const newRow = { uuid: uuid(), ...action.payload };
+      return {
+        ...state,
+        rows: [...state.rows, newRow],
+        sort: {
+          property: "",
+          asc: false,
+        },
+      };
+    }
     case "DELETE_ROW": {
       const newRows = state.rows.filter(
-        (row: any) => row[action.payload.identifier] !== action.payload.value
+        (row: any) => row.uuid !== action.payload
       );
       return {
         ...state,
@@ -35,14 +54,18 @@ function reducer(state: State, action: Action): State {
     }
     case "UPDATE_ROW": {
       const newRows = state.rows.map((row: any) => {
-        if (row[action.payload.identifier] === action.payload.value) {
-          return action.payload;
+        if (row.uuid === action.payload.uuid) {
+          return { ...row, ...action.payload.data };
         }
         return row;
       });
       return {
         ...state,
         rows: newRows,
+        sort: {
+          property: "",
+          asc: false,
+        },
       };
     }
     case "SORT_BY": {
