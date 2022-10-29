@@ -64,9 +64,22 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
     });
   };
 
+  const handleCreateNewRow = () => {
+    const formElements = columns.filter((column) => column.editable);
+    const columnNames = formElements.map((column) => column.accessor);
+    const defaultData: any = {};
+    columnNames.forEach((columnName) => {
+      defaultData[columnName] = "";
+    });
+    dispatch({
+      type: "CREATE_ROW",
+      payload: defaultData,
+    });
+  };
+
   return (
     <div className="Grid-Container">
-      <button className="add-btn" onClick={() => setShowForm(true)}>
+      <button className="add-btn" onClick={handleCreateNewRow}>
         Add Row
       </button>
       {showForm && (
@@ -100,6 +113,7 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
                 validation={validation}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}
+                handleInsert={handleInsert}
               />
             ))}
           </tbody>

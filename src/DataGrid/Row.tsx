@@ -5,8 +5,9 @@ interface Props {
   columns: Column[];
   row: any;
   validation?: (values: any) => string[];
-  handleDelete: (uuid: any) => any;
-  handleUpdate: (uuid: any, data: any) => any;
+  handleDelete: (uuid: any) => void;
+  handleUpdate: (uuid: any, data: any) => void;
+  handleInsert: (data: any) => void;
 }
 
 const Row: React.FC<Props> = ({
@@ -15,8 +16,9 @@ const Row: React.FC<Props> = ({
   validation,
   handleDelete,
   handleUpdate,
+  handleInsert,
 }) => {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(row.newlyCreated ? true : false);
   const columnNames = columns.map((column: Column) => column.accessor);
   const defaultData: any = {};
   columnNames.forEach((columnName) => {
@@ -67,18 +69,32 @@ const Row: React.FC<Props> = ({
         <span
           className="icon save"
           onClick={() => {
+            const edit = () => {
+              handleUpdate(row.uuid, rowState);
+              setEditMode(false);
+            };
+            const insert = () => {
+              handleInsert(rowState);
+              handleDelete(row.uuid);
+            };
             if (validation) {
               let errors = validation(rowState);
               if (errors.length === 0) {
-                handleUpdate(row.uuid, rowState);
-                setEditMode(false);
+                if (!row.newlyCreated) {
+                  edit();
+                } else {
+                  insert();
+                }
               } else {
                 let errMessage = errors.reduce((p, c) => (p += "\n" + c), "");
                 alert(errMessage);
               }
             } else {
-              handleUpdate(row.uuid, rowState);
-              setEditMode(false);
+              if (!row.newlyCreated) {
+                edit();
+              } else {
+                insert();
+              }
             }
           }}
         >
@@ -87,8 +103,12 @@ const Row: React.FC<Props> = ({
         <span
           className="icon times"
           onClick={() => {
-            setRowState(defaultData);
-            setEditMode(false);
+            if (row.newlyCreated) {
+              handleDelete(row.uuid);
+            } else {
+              setRowState(defaultData);
+              setEditMode(false);
+            }
           }}
         >
           &#215;

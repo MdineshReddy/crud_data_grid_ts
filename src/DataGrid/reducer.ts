@@ -68,6 +68,16 @@ function reducer(state: State, action: Action): State {
         },
       };
     }
+    case "CREATE_ROW": {
+      return {
+        ...state,
+        rows: [...state.rows, { ...action.payload, newlyCreated: true }],
+        sort: {
+          property: "",
+          asc: false,
+        },
+      };
+    }
     case "SORT_BY": {
       const property = action.payload.property;
       const asc = action.payload.asc;
