@@ -2,6 +2,7 @@ interface BaseType {
   accessor: string;
   header: string;
   sortable?: boolean;
+  filterable?: boolean;
   width?: number;
   renderCell?: (row: any) => JSX.Element;
 }

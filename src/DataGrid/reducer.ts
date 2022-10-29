@@ -12,6 +12,7 @@ interface State {
     property: string;
     asc: boolean;
   };
+  filters: any;
 }
 
 function reducer(state: State, action: Action): State {
@@ -26,10 +27,6 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         rows: newRows,
-        sort: {
-          property: "",
-          asc: false,
-        },
       };
     }
     case "INSERT_ROW": {
@@ -66,6 +63,7 @@ function reducer(state: State, action: Action): State {
           property: "",
           asc: false,
         },
+        filters: {},
       };
     }
     case "CREATE_ROW": {
@@ -76,6 +74,7 @@ function reducer(state: State, action: Action): State {
           property: "",
           asc: false,
         },
+        filters: {},
       };
     }
     case "SORT_BY": {
@@ -98,6 +97,15 @@ function reducer(state: State, action: Action): State {
           asc,
         },
         rows: sorted,
+      };
+    }
+    case "SET_FILTER": {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [action.payload.property]: action.payload.value,
+        },
       };
     }
     default:

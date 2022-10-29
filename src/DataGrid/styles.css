@@ -44,6 +44,11 @@ select {
   box-sizing: border-box;
 }
 
+.filter-row {
+  padding: 5px;
+  bottom: 0;
+}
+
 table input:invalid {
   border: 2px solid red;
 }

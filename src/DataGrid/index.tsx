@@ -22,7 +22,25 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
       property: "",
       asc: true,
     },
+    filters: {},
   });
+
+  const [filteredRows, setFiltedRows] = useState(state.rows);
+
+  useEffect(() => {
+    const newFilteredRows = state.rows.filter((row: any) => {
+      const filterProps = Object.keys(state.filters);
+      let satify = filterProps.every((filterProp) =>
+        String(row[filterProp])
+          .toLowerCase()
+          .includes(String(state.filters[filterProp]).toLowerCase())
+      );
+      if (satify) {
+        return row;
+      }
+    });
+    setFiltedRows(newFilteredRows);
+  }, [state.filters, state.rows]);
 
   useEffect(() => {
     dispatch({
@@ -77,6 +95,10 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
     });
   };
 
+  const setFilter = (property: any, value: any) => {
+    dispatch({ type: "SET_FILTER", payload: { property, value } });
+  };
+
   return (
     <div className="Grid-Container">
       <button className="add-btn" onClick={handleCreateNewRow}>
@@ -103,9 +125,14 @@ const DataGrid: React.FC<Props> = ({ columns, data, validation }) => {
               />
             ))}
           </colgroup>
-          <Thead headers={columns} sort={state.sort} handleSort={sortBy} />
+          <Thead
+            headers={columns}
+            sort={state.sort}
+            handleSort={sortBy}
+            setFilter={setFilter}
+          />
           <tbody>
-            {state.rows.map((row: any, index: number) => (
+            {filteredRows.map((row: any, index: number) => (
               <Row
                 key={row.id}
                 row={row}

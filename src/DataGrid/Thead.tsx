@@ -7,10 +7,11 @@ interface Props {
     property: string;
     asc: boolean;
   };
-  handleSort: (property: string, asc: boolean) => any;
+  handleSort: (property: string, asc: boolean) => void;
+  setFilter: (property: any, value: any) => void;
 }
 
-const Thead: React.FC<Props> = ({ headers, sort, handleSort }) => {
+const Thead: React.FC<Props> = ({ headers, sort, handleSort, setFilter }) => {
   return (
     <thead>
       <tr>
@@ -21,10 +22,16 @@ const Thead: React.FC<Props> = ({ headers, sort, handleSort }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "start",
+                justifyContent: headerItem.filterable ? "center" : "start",
               }}
             >
-              <span>{headerItem.header}</span>
+              <span
+                style={{
+                  margin: "1rem 0rem",
+                }}
+              >
+                {headerItem.header}
+              </span>
               {headerItem.sortable && (
                 <div
                   style={{
@@ -63,6 +70,13 @@ const Thead: React.FC<Props> = ({ headers, sort, handleSort }) => {
                 </div>
               )}
             </div>
+            {headerItem.filterable && (
+              <input
+                className="filter-row"
+                placeholder={`Filter by ${headerItem.header}`}
+                onChange={(e) => setFilter(headerItem.accessor, e.target.value)}
+              />
+            )}
           </th>
         ))}
       </tr>

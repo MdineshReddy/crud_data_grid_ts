@@ -20,6 +20,7 @@ const DataGridExample = () => {
         accessor: "name",
         header: "Name",
         editable: true,
+        filterable: true,
         type: "text",
         sortable: true,
         width: 100,
@@ -31,6 +32,7 @@ const DataGridExample = () => {
         accessor: "email",
         header: "Email",
         editable: true,
+        filterable: true,
         type: "text",
         width: 100,
         sortable: true,
@@ -41,6 +43,7 @@ const DataGridExample = () => {
       {
         accessor: "role",
         header: "Role",
+        filterable: true,
         editable: true,
         width: 150,
         type: "select",
