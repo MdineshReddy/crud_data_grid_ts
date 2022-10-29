@@ -1,0 +1,47 @@
+[
+  {
+    "avatar": "http://dummyimage.com/192x100.png/ff4444/ffffff",
+    "name": "Brandyn Nossent",
+    "email": "bnossent0@chron.com",
+    "role": "admin",
+    "active": true,
+    "createdAt": "2022-05-21",
+    "id": "634e0e05fc13ae0775000064"
+  },
+  {
+    "avatar": "http://dummyimage.com/131x100.png/cc0000/ffffff",
+    "name": "Shelba Martinie",
+    "email": "smartinie1@networkadvertising.org",
+    "role": "editor",
+    "active": false,
+    "createdAt": "2021-11-06",
+    "id": "634e0e05fc13ae0775000065"
+  },
+  {
+    "avatar": "http://dummyimage.com/226x100.png/5fa2dd/ffffff",
+    "name": "Denni Hamlett",
+    "email": "dhamlett2@odnoklassniki.ru",
+    "role": "basic",
+    "active": false,
+    "createdAt": "2022-10-15",
+    "id": "634e0e05fc13ae0775000066"
+  },
+  {
+    "avatar": "http://dummyimage.com/158x100.png/cc0000/ffffff",
+    "name": "Olivier Struther",
+    "email": "ostruther3@sohu.com",
+    "role": "admin",
+    "active": false,
+    "createdAt": "2022-05-29",
+    "id": "634e0e05fc13ae0775000067"
+  },
+  {
+    "avatar": "http://dummyimage.com/123x100.png/ff4444/ffffff",
+    "name": "Ainslie Saturley",
+    "email": "asaturley4@stanford.edu",
+    "role": "editor",
+    "active": false,
+    "createdAt": "2022-02-12",
+    "id": "634e0e05fc13ae0775000068"
+  }
+]
